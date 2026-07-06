@@ -25,7 +25,8 @@ tea-research-tracker/
 ├─ tests/test_smoke.py              # GitHub Actions 离线冒烟测试
 ├─ reports/                        # 每周报告
 └─ .github/workflows/
-   └─ weekly-tracker.yml           # 每周自动运行任务
+   ├─ weekly-tracker.yml           # 每周自动检索与生成报告
+   └─ project-checks.yml            # 代码变更时执行离线自检
 ```
 
 ## 如何查看每周报告

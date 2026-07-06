@@ -22,6 +22,7 @@ tea-research-tracker/
 ├─ config.yaml                     # 关键词和运行参数
 ├─ requirements.txt                # Python 依赖
 ├─ README.md                       # 使用说明
+├─ tests/test_smoke.py              # GitHub Actions 离线冒烟测试
 ├─ reports/                        # 每周报告
 └─ .github/workflows/
    └─ weekly-tracker.yml           # 每周自动运行任务
@@ -106,7 +107,7 @@ python main.py --dry-run
 - 定时表达式是 `0 1 * * 1`，即每周一 01:00 UTC。
 - 北京时间和新加坡时间都是 UTC+8，因此对应每周一上午 9:00。
 - GitHub 的定时任务有时会因平台繁忙延迟几分钟，这是正常现象。
-- 工作流会安装依赖、运行 `main.py`，然后把 `reports` 中的新报告自动提交回 `main` 分支。
+- 工作流会安装依赖，先运行不联网的冒烟测试，再运行 `main.py`，最后把 `reports` 中的新报告自动提交回 `main` 分支。
 
 第一次使用时，请检查仓库：**Settings → Actions → General → Workflow permissions**，确保选择 **Read and write permissions**。本项目的工作流也声明了 `contents: write`，两者共同决定它能否自动提交报告。
 

@@ -1,0 +1,99 @@
+# 茶叶方向每周学术进展追踪程序配置
+# 修改关键词时，只需要编辑 categories 下方的列表；注意保留每行开头的两个空格和短横线。
+
+contact_email: ""
+
+report:
+  lookback_days: 7
+  output_dir: reports
+  filename_prefix: weekly_report_
+  top_papers: 8
+  max_authors: 12
+  max_abstract_characters: 1800
+  request_timeout_seconds: 30
+  request_delay_seconds: 0.25
+
+sources:
+  crossref:
+    enabled: true
+    rows_per_keyword: 20
+  pubmed:
+    enabled: true
+    rows_per_keyword: 20
+  semantic_scholar:
+    enabled: true
+    rows_per_keyword: 20
+
+# 同一篇论文可以命中多个方向；报告中会选择一个主要方向展示，并保留全部命中方向。
+categories:
+  茶树综合研究:
+    - 茶树
+    - Camellia sinensis
+    - tea plant
+  茶叶品质:
+    - 茶叶品质
+    - tea quality
+  茶树育种与种质资源:
+    - 茶树育种
+    - 茶树种质资源
+    - tea breeding
+    - tea germplasm
+  茶树代谢组:
+    - 茶树代谢组
+    - tea metabolomics
+  茶树基因组:
+    - 茶树基因组
+    - tea genomics
+  SSR与分子标记:
+    - SSR
+    - simple sequence repeat
+    - microsatellite marker
+
+# 这些词只用于归类，不会额外增加接口查询次数。
+classification_terms:
+  茶叶品质:
+    - flavor
+    - aroma
+    - sensory
+    - quality
+    - withering
+    - rolling
+  茶树育种与种质资源:
+    - breeding line
+    - progeny
+    - germplasm
+    - cultivar selection
+  茶树代谢组:
+    - metabolomic
+    - metabolomics
+    - metabolome
+  茶树基因组:
+    - genomic
+    - genome
+    - pan-genomic
+    - pan-genome
+  SSR与分子标记:
+    - SSR marker
+    - microsatellite
+    - DNA fingerprint
+
+classification_priority:
+  - SSR与分子标记
+  - 茶树基因组
+  - 茶树代谢组
+  - 茶树育种与种质资源
+  - 茶叶品质
+  - 茶树综合研究
+
+# 命中这些词的论文会在“值得重点关注”排序中适当加分，可按课题重点调整。
+priority_terms:
+  - breeding
+  - germplasm
+  - genome
+  - genomics
+  - metabolomics
+  - SSR
+  - 茶树育种
+  - 种质资源
+  - 基因组
+  - 代谢组

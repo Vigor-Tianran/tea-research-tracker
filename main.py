@@ -522,7 +522,354 @@ def collect_papers(
     config: dict[str, Any], session: requests.Session, start: date, end: date
 ) -> tuple[list[Paper], list[str]]:
     report_config = config.get("report", {})
-    timeout = float(report_config.get("request_timeout_sec…4277 tokens truncated…: (
+    timeout = float(report_config.get("request_timeout_seconds", 30))
+    delay = float(report_config.get("request_delay_seconds", 0.25))
+    contact_email = os.getenv("CONTACT_EMAIL") or config.get("contact_email", "")
+    all_papers: dict[str, Paper] = {}
+    warnings: list[str] = []
+    keyword_pairs = flatten_keywords(config)
+    for source_name, source_config in config.get("sources", {}).items():
+        if not source_config.get("enabled", False):
+            continue
+        fetcher = SOURCE_FETCHERS.get(source_name)
+        if not fetcher:
+            warnings.append(f"未知数据源 `{source_name}`，已跳过")
+            continue
+        LOGGER.info("开始检索数据源：%s", source_name)
+        for category, keyword in keyword_pairs:
+            try:
+                found = fetcher(
+                    session, keyword, category, start, end, source_config, timeout, contact_email
+                )
+                LOGGER.info("%s | %s | 找到 %d 篇", source_name, keyword, len(found))
+                for paper in found:
+                    if (
+                        not paper.title
+                        or not is_tea_relevant(paper)
+                        or not keyword_in_paper(paper, keyword)
+                    ):
+                        continue
+                    add_text_categories(paper, config)
+                    if paper.identity in all_papers:
+                        merge_paper(all_papers[paper.identity], paper)
+                    else:
+                        all_papers[paper.identity] = paper
+            except (requests.RequestException, ValueError, ET.ParseError) as exc:
+                message = f"{source_name} 检索“{keyword}”失败：{clean_text(exc)}"
+                warnings.append(message)
+                LOGGER.warning(message)
+                if source_name == "semantic_scholar" and not os.getenv("S2_API_KEY", "").strip():
+                    warnings.append("Semantic Scholar 匿名接口已限流，本次运行跳过其余关键词；Crossref 和 PubMed 将继续检索。")
+                    break
+            if delay:
+                time.sleep(delay)
+    papers = list(all_papers.values())
+    papers.sort(key=lambda paper: (paper.publication_date or date.min, paper.title), reverse=True)
+    return papers, warnings
+
+
+def paper_score(paper: Paper, end: date, config: dict[str, Any]) -> int:
+    score = 0
+    if paper.publication_date:
+        score += max(0, 4 - max(0, (end - paper.publication_date).days) // 2)
+    if paper.abstract:
+        score += 2
+    if paper.doi:
+        score += 1
+    score += min(len(paper.categories), 3)
+    text = f"{paper.title} {paper.abstract}".lower()
+    for term in config.get("priority_terms", []):
+        if str(term).lower() in text:
+            score += 2
+    return score
+
+
+TOPIC_RULES: tuple[tuple[tuple[str, ...], str], ...] = (
+    (("ssr", "simple sequence repeat", "microsatellite", "dna fingerprint"), "茶树SSR标记、分子指纹与材料鉴定"),
+    (("germplasm", "genetic diversity", "population structure", "种质"), "茶树种质资源遗传多样性与群体结构"),
+    (("breeding", "progeny", "selection", "育种"), "茶树育种材料评价与优良材料筛选"),
+    (("pan-genom", "genome-wide", "genomic", "genome", "基因组"), "茶树基因组变异与候选基因挖掘"),
+    (("transcriptom", "rna-seq", "gene expression", "regulatory cascade"), "茶树转录调控与基因表达"),
+    (("metabolom", "metabolic profiling", "代谢组"), "茶树代谢组与差异代谢物分析"),
+    (("flavor", "aroma", "sensory", "quality", "风味", "香气", "品质"), "茶叶风味、感官品质与品质形成"),
+    (("phytochemical", "chemical profiling", "compound identification", "植物化学"), "茶树植物化学成分鉴定"),
+    (("drought", "cold", "salt stress", "stress resistance", "胁迫", "抗性"), "茶树非生物胁迫与抗逆机制"),
+    (("pest", "infestation", "pathogen", "disease resistance", "病害", "虫害"), "茶树病虫害响应与抗性"),
+    (("withering", "rolling", "fermentation", "storage", "加工", "萎凋", "揉捻"), "茶叶加工过程与品质变化"),
+)
+
+METHOD_RULES: tuple[tuple[tuple[str, ...], str], ...] = (
+    (("ssr marker", "microsatellite marker", "simple sequence repeat"), "SSR/微卫星分子标记分析"),
+    (("population structure", "structure analysis"), "群体结构分析"),
+    (("genetic diversity", "polymorphism information"), "遗传多样性与位点多态性评价"),
+    (("rna-seq", "transcriptom"), "转录组测序与差异表达分析"),
+    (("pan-genom", "pangenom"), "泛基因组比较分析"),
+    (("genome-wide", "whole-genome", "whole genome"), "全基因组分析"),
+    (("gwas", "genome-wide association"), "全基因组关联分析（GWAS）"),
+    (("qtl", "quantitative trait locus"), "数量性状位点（QTL）分析"),
+    (("metabolom", "metabolic profiling"), "代谢组学分析"),
+    (("uplc-ms", "uplc–ms", "uplc-esi-ms", "lc-ms", "lc–ms"), "液相色谱-质谱分析（LC-MS）"),
+    (("gc-ms", "gc–ms"), "气相色谱-质谱分析（GC-MS）"),
+    (("gc-ims", "gc–ims"), "气相色谱-离子迁移谱（GC-IMS）"),
+    (("hplc",), "高效液相色谱分析（HPLC）"),
+    (("e-nose", "electronic nose"), "电子鼻分析"),
+    (("sensory evaluation", "sensory analysis"), "感官评价"),
+    (("16s rrna", "16s sequencing"), "16S rRNA微生物组测序"),
+    (("phylogenetic", "phylogeny"), "系统发育分析"),
+    (("qrt-pcr", "quantitative real-time pcr", "real-time pcr"), "实时荧光定量PCR验证"),
+    (("overexpression", "gene silencing", "transgenic", "functional analysis"), "基因功能验证"),
+    (("biochemical", "enzyme activity"), "生化指标或酶活性测定"),
+)
+
+TRACKING_SUGGESTIONS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("tea germplasm genetic diversity", ("germplasm", "genetic diversity", "种质")),
+    ("SSR marker tea germplasm", ("ssr", "microsatellite", "dna fingerprint")),
+    ("Camellia sinensis pan-genome", ("pan-genom", "pangenom", "genome")),
+    ("tea plant breeding lines", ("breeding", "progeny", "育种")),
+    ("tea quality metabolomics", ("metabolom", "quality", "flavor")),
+    ("tea aroma sensory analysis", ("aroma", "sensory", "gc-ims")),
+    ("tea phytochemical profiling LC-MS", ("phytochemical", "compound identification", "lc-ms")),
+    ("tea plant stress resistance", ("drought", "cold", "stress resistance")),
+)
+
+
+@dataclass(frozen=True)
+class PaperSummary:
+    study: str
+    methods: str
+    conclusion: str
+    inspiration: str
+    recommendation: str
+    basis: str = "规则兜底"
+
+
+def paper_text(paper: Paper) -> str:
+    return f"{paper.title} {paper.abstract}".lower()
+
+
+def detect_topics(paper: Paper) -> list[str]:
+    text = paper_text(paper)
+    topics = [label for terms, label in TOPIC_RULES if any(term in text for term in terms)]
+    if topics:
+        return topics[:3]
+    category = next(iter(sorted(paper.categories)), "茶树相关研究")
+    return [category]
+
+
+def detect_methods(paper: Paper) -> list[str]:
+    text = paper_text(paper)
+    methods: list[str] = []
+    for terms, label in METHOD_RULES:
+        if any(term in text for term in terms) and label not in methods:
+            methods.append(label)
+    return methods
+
+
+def detect_sample_hint(paper: Paper) -> str:
+    if not paper.abstract:
+        return ""
+    match = re.search(
+        r"\b(\d{1,4}(?:,\d{3})*)\s+(?:tea\s+)?(accessions?|cultivars?|samples?|genotypes?|progen(?:y|ies)|varieties)\b",
+        paper.abstract,
+        flags=re.IGNORECASE,
+    )
+    if not match:
+        return ""
+    noun = match.group(2).lower()
+    noun_cn = "份材料"
+    if "progen" in noun:
+        noun_cn = "份后代材料"
+    elif "cultivar" in noun or "variet" in noun:
+        noun_cn = "个品种"
+    elif "sample" in noun:
+        noun_cn = "个样品"
+    return f"{match.group(1)}{noun_cn}"
+
+
+def summarize_study(paper: Paper) -> str:
+    topics = detect_topics(paper)
+    topic_text = "，并关注".join(topics[:2])
+    if not paper.abstract:
+        return (
+            f"摘要缺失，以下为基于标题的初步判断：题目显示该研究可能围绕{topic_text}展开；"
+            "具体研究对象、试验设计和研究范围需查阅全文确认。"
+        )
+    sample = detect_sample_hint(paper)
+    sample_text = f"摘要提及以{sample}为研究对象。" if sample else ""
+    return f"该研究围绕{topic_text}展开。{sample_text}概括依据仅来自题名和摘要。"
+
+
+def summarize_methods(paper: Paper) -> str:
+    methods = detect_methods(paper)
+    if not paper.abstract:
+        if methods:
+            return f"摘要缺失；标题明确提及的方法包括：{'、'.join(methods[:4])}。其他步骤无法判断。"
+        return "摘要缺失；标题未明确研究方法，无法可靠判断。"
+    if not methods:
+        return "摘要未明确给出可识别的具体技术路线，需查阅全文方法部分。"
+    return f"摘要提及的主要方法包括：{'、'.join(methods[:5])}。"
+
+
+def detected_identification_result(paper: Paper) -> str:
+    match = re.search(
+        r"\b(?:identified|detected|screened)\s+(?:a total of\s+)?(\d{1,6}(?:,\d{3})*)\s+"
+        r"(genes?|markers?|metabolites?|compounds?|volatiles?|snps?)\b",
+        paper.abstract,
+        flags=re.IGNORECASE,
+    )
+    if not match:
+        return ""
+    noun_map = {
+        "gene": "个基因", "genes": "个基因", "marker": "个标记", "markers": "个标记",
+        "metabolite": "种代谢物", "metabolites": "种代谢物", "compound": "种化合物",
+        "compounds": "种化合物", "volatile": "种挥发性成分", "volatiles": "种挥发性成分",
+        "snp": "个SNP位点", "snps": "个SNP位点",
+    }
+    return f"摘要报告鉴定或检测到{match.group(1)}{noun_map.get(match.group(2).lower(), '项候选对象')}。"
+
+
+def summarize_conclusion(paper: Paper) -> str:
+    if not paper.abstract:
+        return "摘要缺失；标题不足以支持具体结论判断，需查阅原文。"
+    text = paper_text(paper)
+    conclusions: list[str] = []
+    identified = detected_identification_result(paper)
+    if identified:
+        conclusions.append(identified)
+    if "genetic diversity" in text or "population structure" in text:
+        conclusions.append("摘要结果涉及茶树材料间的遗传多样性或群体结构差异，可为材料鉴别与资源评价提供依据。")
+    if any(term in text for term in ("regulates", "regulated", "mediates", "regulatory cascade")):
+        conclusions.append("摘要提出了与目标性状或响应过程相关的基因调控关系。")
+    if "metabolom" in text and any(term in text for term in ("flavor", "aroma", "quality", "sensory")):
+        conclusions.append("摘要显示代谢物组成与风味、香气或品质表型之间存在联系。")
+    elif "metabolom" in text:
+        conclusions.append("摘要报告不同材料或处理条件下存在代谢物组成差异。")
+    if any(term in text for term in ("drought", "cold resistance", "salt stress", "stress resistance")):
+        conclusions.append("摘要表明相关基因、代谢变化或生理指标与茶树抗逆响应有关。")
+    if any(term in text for term in ("significant difference", "significantly different", "significantly increased", "significantly decreased")):
+        conclusions.append("摘要报告部分比较组之间存在统计学差异。")
+    if not conclusions:
+        return "摘要给出了研究结果，但自动规则无法在不增加额外推断的前提下可靠转写具体结论，建议核对原文结论段。"
+    return "".join(conclusions[:3])
+
+
+def summarize_inspiration(paper: Paper) -> str:
+    text = paper_text(paper)
+    suggestions: list[str] = []
+    if any(term in text for term in ("germplasm", "genetic diversity", "population structure", "种质")):
+        suggestions.append("可参考其材料分组、遗传多样性指标和群体结构框架，用于种质资源评价或核心种质筛选")
+    if any(term in text for term in ("ssr", "microsatellite", "dna fingerprint")):
+        suggestions.append("可核对标记多态性、材料鉴别力和指纹构建流程，为SSR标记应用提供参数依据")
+    if any(term in text for term in ("breeding", "progeny", "selection", "育种")):
+        suggestions.append("可借鉴其后代评价与优良材料筛选思路，优化育种材料的分层验证")
+    if any(term in text for term in ("genom", "transcriptom", "candidate gene")):
+        suggestions.append("可整理候选基因、变异位点及验证方法，评估是否能在自己的茶树材料中复现")
+    if "metabolom" in text:
+        suggestions.append("可参考代谢物提取、差异筛选及通路分析，将代谢变化与品质性状或材料差异关联")
+    if any(term in text for term in ("flavor", "aroma", "sensory", "quality")):
+        suggestions.append("可比较其品质指标、感官评价和对照设计，筛选适合自己课题的核心表型")
+    if any(term in text for term in ("phytochemical", "compound identification", "hplc", "lc-ms")):
+        suggestions.append("可关注提取分离、标准品比对与化合物鉴定置信度，用于植物化学成分鉴定方案设计")
+    if not suggestions:
+        suggestions.append("可从研究对象、试验设计和统计方法三个层面与自己的课题对照，再判断是否值得全文精读")
+    result = "；".join(suggestions[:2]) + "。"
+    if not paper.abstract:
+        result += "由于摘要缺失，在获取全文前不宜直接据此调整试验方案。"
+    return result
+
+
+def inspiration_for(paper: Paper) -> list[str]:
+    """兼容旧版报告函数；新版报告直接使用 summarize_inspiration。"""
+    return [summarize_inspiration(paper)]
+
+
+def recommendation_level(paper: Paper, end: date, config: dict[str, Any]) -> str:
+    if not paper.abstract:
+        return "低"
+    score = paper_score(paper, end, config)
+    if score >= 9 and detect_methods(paper):
+        return "高"
+    if score >= 5:
+        return "中"
+    return "低"
+
+
+def summarize_paper(paper: Paper, end: date, config: dict[str, Any]) -> PaperSummary:
+    """不调用外部模型的保守兜底总结。"""
+    return PaperSummary(
+        study=summarize_study(paper),
+        methods=summarize_methods(paper),
+        conclusion=summarize_conclusion(paper),
+        inspiration=summarize_inspiration(paper),
+        recommendation=recommendation_level(paper, end, config),
+        basis="规则兜底（摘要）" if paper.abstract else "规则兜底（仅标题）",
+    )
+
+
+OPENAI_SUMMARY_SCHEMA: dict[str, Any] = {
+    "type": "json_schema",
+    "name": "tea_paper_summary",
+    "strict": True,
+    "schema": {
+        "type": "object",
+        "properties": {
+            "study": {"type": "string"},
+            "methods": {"type": "string"},
+            "conclusion": {"type": "string"},
+            "inspiration": {"type": "string"},
+            "recommendation": {"type": "string", "enum": ["高", "中", "低"]},
+        },
+        "required": ["study", "methods", "conclusion", "inspiration", "recommendation"],
+        "additionalProperties": False,
+    },
+}
+
+
+def openai_summary_prompt(paper: Paper, max_input_characters: int) -> str:
+    if paper.full_text:
+        basis = "PMC 开放获取全文"
+        content = paper.full_text
+    else:
+        basis = "题名和摘要（未取得开放获取全文）"
+        content = paper.abstract
+    content = content[:max_input_characters]
+    return f"""请分析下面这篇茶学论文，并严格按 JSON schema 输出中文结果。
+
+证据边界：
+- 你只能使用下方提供的论文内容，不得用记忆补充文中没有的样本量、方法、结果或机制。
+- 当前材料依据为：{basis}。
+- 若依据为全文，请综合方法、结果和讨论，区分作者实际结果与讨论性解释。
+- 若只有摘要，请明确写“基于题名和摘要”，不要声称阅读全文。
+- “对我的研究启发”应面向茶树种质资源、茶叶品质、茶树育种、茶树代谢组、植物化学鉴定，给出可操作但不过度外推的建议。
+- 语言适合农艺与种业专业茶叶方向硕士生；准确、具体、简洁。
+- 推荐等级综合课题相关性、证据完整度和方法参考价值评定。
+
+论文元数据：
+标题：{paper.title}
+作者：{'、'.join(paper.authors) or '未提供'}
+期刊：{paper.journal or '未提供'}
+年份：{paper.year or '未提供'}
+DOI：{paper.doi or '未提供'}
+
+论文内容（{basis}）：
+{content}
+"""
+
+
+def summarize_paper_with_openai(
+    paper: Paper,
+    client: Any,
+    model: str,
+    openai_config: dict[str, Any],
+) -> PaperSummary:
+    """使用 Responses API 和严格 JSON schema 生成可验证结构的总结。"""
+    max_input = int(openai_config.get("max_input_characters", 30000))
+    response = client.responses.create(
+        model=model,
+        input=[
+            {
+                "role": "system",
+                "content": (
                     "你是一名严谨的茶学文献分析助手。只能根据用户提供的论文内容作答；"
                     "证据不足时必须明确说明，不得编造。"
                 ),

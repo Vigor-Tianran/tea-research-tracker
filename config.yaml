@@ -13,6 +13,23 @@ report:
   request_timeout_seconds: 30
   request_delay_seconds: 0.25
 
+# OpenAI 深度总结。密钥不要写在本文件中，请使用环境变量 OPENAI_API_KEY。
+# OPENAI_MODEL 环境变量可临时覆盖这里的模型。
+openai:
+  enabled: true
+  model: gpt-5.4-mini
+  max_input_characters: 30000
+  max_output_tokens: 1400
+  max_papers_per_report: 30
+  request_timeout_seconds: 120
+  request_delay_seconds: 0.2
+
+# 仅获取 PubMed Central（PMC）合法开放的正文，不访问付费墙内容。
+full_text:
+  enabled: true
+  max_characters_per_paper: 30000
+  max_papers_per_report: 30
+
 sources:
   crossref:
     enabled: true

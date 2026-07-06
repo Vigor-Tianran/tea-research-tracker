@@ -23,6 +23,8 @@ jobs:
       CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
       NCBI_API_KEY: ${{ secrets.NCBI_API_KEY }}
       S2_API_KEY: ${{ secrets.S2_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
 
     steps:
       - name: Checkout repository

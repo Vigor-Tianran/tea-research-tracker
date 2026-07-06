@@ -1,14 +1,14 @@
 # 茶叶方向每周学术进展周报（2026-07-06）
 
 > 检索时间范围：**2026-06-30 至 2026-07-06**（最近 7 天）  
-> 共去重获得 **17** 篇相关论文。报告由公开学术接口自动生成，请在引用前核对论文原文。
+> 共去重获得 **18** 篇相关论文。报告由公开学术接口自动生成，请在引用前核对论文原文。
 
 ## 本周茶叶方向学术进展概览
 
-本周检索结果主要分布为：茶叶品质 8 篇、茶树代谢组 4 篇、茶树基因组 3 篇、SSR与分子标记 2 篇。
+本周检索结果主要分布为：茶叶品质 9 篇、茶树代谢组 4 篇、茶树基因组 3 篇、SSR与分子标记 2 篇。
 
-- 数据来源：PubMed 14 条记录、Crossref 4 条记录
-- 记录较多的期刊：Food chemistry: X、Food chemistry、Journal of the science of food and agriculture、Scientific Reports、Frontiers in Plant Science
+- 数据来源：PubMed 14 条记录、Crossref 5 条记录
+- 记录较多的期刊：Frontiers in Plant Science、Food chemistry: X、Food chemistry、Journal of the science of food and agriculture、Scientific Reports
 - 阅读建议：优先查看下方“值得重点关注的论文”，再按自己的课题方向进入分类列表精读。
 
 ## 值得重点关注的论文
@@ -21,18 +21,37 @@
    - 关注理由：可借鉴其材料选择、表型评价或遗传多样性分析框架，用于优化种质资源筛选与育种亲本选择。
 4. [A CsNF-YB4-CsWAT1-CsARF9 regulatory cascade mediates auxin-dependent suppression of lignin biosynthesis and resistance to Colletotrichum camelliae in tea plants.](#paper-1f0e6e599f)（茶树基因组）
    - 关注理由：可重点关注候选基因、变异位点与性状关联方法，并评估其是否能用于你的茶树材料验证。
-5. [Unraveling the flavor development mechanisms of areca-intercropped Hainan Dayezhong white tea.](#paper-ea6ac7da3b)（茶树代谢组）
-   - 关注理由：可参考其代谢物提取、质谱分析和差异代谢物筛选流程，建立品质性状与代谢通路之间的联系。
-6. [Metabolomic dynamics of flavor compound synthesis in Pu’er green tea produced from Camellia sinensis var. assamica under seasonal variation](#paper-5d49c290e2)（茶树代谢组）
-   - 关注理由：可参考其代谢物提取、质谱分析和差异代谢物筛选流程，建立品质性状与代谢通路之间的联系。
-7. [CsWRKY75-CsABF4 module regulated beta-amylases-mediated starch degradation to enhance drought resistance in tea plants (Camellia sinensis).](#paper-a4aaf684a1)（茶叶品质）
+5. [From classical practices to precision agriculture: a multidisciplinary review of tea (Camellia sinensis)](#paper-4d06287e89)（茶叶品质）
    - 关注理由：可比较其品质指标、感官评价或环境处理设计，作为你选择核心表型和对照条件的依据。
-8. [Rolling temperature affects green tea quality and non-volatile metabolites: Insights from integrated metabolomics and proteomics.](#paper-0dd863145f)（茶树代谢组）
+6. [Unraveling the flavor development mechanisms of areca-intercropped Hainan Dayezhong white tea.](#paper-ea6ac7da3b)（茶树代谢组）
    - 关注理由：可参考其代谢物提取、质谱分析和差异代谢物筛选流程，建立品质性状与代谢通路之间的联系。
+7. [Metabolomic dynamics of flavor compound synthesis in Pu’er green tea produced from Camellia sinensis var. assamica under seasonal variation](#paper-5d49c290e2)（茶树代谢组）
+   - 关注理由：可参考其代谢物提取、质谱分析和差异代谢物筛选流程，建立品质性状与代谢通路之间的联系。
+8. [CsWRKY75-CsABF4 module regulated beta-amylases-mediated starch degradation to enhance drought resistance in tea plants (Camellia sinensis).](#paper-a4aaf684a1)（茶叶品质）
+   - 关注理由：可比较其品质指标、感官评价或环境处理设计，作为你选择核心表型和对照条件的依据。
 
 ## 按方向分类的论文列表
 
-### 茶叶品质（8 篇）
+### 茶叶品质（9 篇）
+
+<a id="paper-4d06287e89"></a>
+#### From classical practices to precision agriculture: a multidisciplinary review of tea (Camellia sinensis)
+
+- **作者：** Muhammet Yildiz; Mehmet Ali Mert; Sheikh Mansoor
+- **期刊：** Frontiers in Plant Science
+- **发表时间：** 2026-07-06
+- **DOI：** 10.3389/fpls.2026.1848455
+- **链接：** https://doi.org/10.3389/fpls.2026.1848455
+- **数据来源：** Crossref
+- **命中关键词：** Camellia sinensis
+- **相关方向：** 茶叶品质、茶树综合研究
+- **摘要：**
+
+> Tea ( Camellia sinensis ) is one of the most widely consumed beverages worldwide and a crop of enduring cultural, economic, and scientific significance. Although many studies has examined cultivation and trade, no previous review has integrated tea’s long-term domestication history with recent advances in precision agriculture and digital technologies. This review addresses that gap by providing a multidisciplinary synthesis that links the historical, biological, agroecological, and technological dimensions of tea production. This review demonstrates that tea productivity and quality are strongly influenced by interactions among genotype, environment, and management practices, while climate variability increasingly disrupts these relationships. At the same time, precision agriculture technologies offer substantial potential to improve disease detection, optimise resource use, and support data-driven decision-making. However, their adoption remains uneven because of high implementation costs, limited accessibility for smallholder farming systems, and challenges related to data infrastructure. Based on this synthesis, we propose that future research and policy should prioritise: (i) the region-specific integration of digital technologies with traditional cultivation practices; (ii) the development of low-cost, scalable technologies suitable for smallholders; and (iii) climate-resilient cultivation strategies adapted to shifting agroecological conditions. These targeted interventions are essential for improving productivity, sustainability, and resilience across the global tea industry.
+
+- **对硕士课题可能有启发的地方：**
+  - 可比较其品质指标、感官评价或环境处理设计，作为你选择核心表型和对照条件的依据。
+  - 建议先通读摘要与方法部分，记录其样本量、关键技术和主要结论，再决定是否下载全文精读。
 
 <a id="paper-a4aaf684a1"></a>
 #### CsWRKY75-CsABF4 module regulated beta-amylases-mediated starch degradation to enhance drought resistance in tea plants (Camellia sinensis).
@@ -161,7 +180,66 @@
 - **相关方向：** 茶叶品质、茶树综合研究
 - **摘要：**
 
-> Camellia sinensis (L.) O. Kuntze exhibits severely restricted growth at low temperatures, resulting in reduced tea leaf yield and quality. BRI1-EMS-suppressor (BES) transcription factors, as key components of the brassinosteroids (BR) signaling pathway, are highly homologous to BZR and jointly regulate plants' adaptation to environmental stress. In this study, the CsBES1-14 gene was successfully cloned and identified from the transcriptome database of tea plant. Biochemical analyses identified CsBES1-14 as a nuclear localized transcriptional activator, and BR and low temperature induced its expression. Arabidopsis thaliana plants overexpressing CsBES1-14 exhibited increased chilling tolerance by promoting root growth and increasing the expression of cold responsive genes. Conversely, the suppression of CsBES1-14 through virus-induced gene silencing (VIGS) in tea plant notably impaired cold tolerance. Transcription Factor-centered Yeast One-Hybrid screening identified CsCOR413 as a downstream target, and electrophoretic mobility shift assays confirmed the dir…1547 tokens truncated…aged tea trees with unique flavor characteristics. Although previous studies have revealed the basic flavor composition of Pu'er green tea, the regulatory effects of seasonal variation on flavor compound biosynthesis in CSA aged tea leaves remain unclear. This study therefore aimed to clarify how seasonal changes (spring/summer/autumn) and spring-harvested aged tea tree leaves (165-year-old) jointly regulate the formation of flavor compounds in CSA green tea processed by standardized roasting. Metabolomic profiling via UPLC-ESI-MS/MS and GC-MS identified 1462 non-volatile and 703 volatile metabolites. We found that flavor compounds were strongly regulated by sugars, lipids, and amino acids, with roasting critically shaping their final profiles. Leaves of spring-harvested aged tea trees exhibit the highest levels of sugars, lipids, and volatile compounds, yet contain lower amounts of amino acids, which accounts for their distinctive sweet-aroma sensory profiles. These results decode seasonal flavor variations and the quality formation mechanism of spring-harvested aged tea tree leaves at the molecular level, offering novel foundational insights for quality improvement of Pu'er green tea.
+> Camellia sinensis (L.) O. Kuntze exhibits severely restricted growth at low temperatures, resulting in reduced tea leaf yield and quality. BRI1-EMS-suppressor (BES) transcription factors, as key components of the brassinosteroids (BR) signaling pathway, are highly homologous to BZR and jointly regulate plants' adaptation to environmental stress. In this study, the CsBES1-14 gene was successfully cloned and identified from the transcriptome database of tea plant. Biochemical analyses identified CsBES1-14 as a nuclear localized transcriptional activator, and BR and low temperature induced its expression. Arabidopsis thaliana plants overexpressing CsBES1-14 exhibited increased chilling tolerance by promoting root growth and increasing the expression of cold responsive genes. Conversely, the suppression of CsBES1-14 through virus-induced gene silencing (VIGS) in tea plant notably impaired cold tolerance. Transcription Factor-centered Yeast One-Hybrid screening identified CsCOR413 as a downstream target, and electrophoretic mobility shift assays confirmed the direct binding of CsBES1-14 to specific cis-elements in the CsCOR413 promoter. Exogenous application of brassinazole (BRZ) and VIGS silencing experiments verified that the ICE-CBF cold response pathway could regulate the low-temperature-regulated protein CsCOR413. In summary, these findings elucidate that CsCOR413 expression is modulated not only by the classic ICE-CBF signaling pathway but also directly regulated by CsBES1-14. These findings outline the key components of the cold resistance network in tea plant and provide novel molecular targets for genetic improvement strategies in perennial crops.
+
+- **对硕士课题可能有启发的地方：**
+  - 可比较其品质指标、感官评价或环境处理设计，作为你选择核心表型和对照条件的依据。
+  - 建议先通读摘要与方法部分，记录其样本量、关键技术和主要结论，再决定是否下载全文精读。
+
+<a id="paper-53e8710966"></a>
+#### The dual fate of L-theanine in tea: Metabolic regulation and processing transformations.
+
+- **作者：** Haiyan Cheng; Jinglei Zheng; Linyue Tu; Lin Chen; Weizhong He; Yuefei Wang; Zhonghua Liu; Ping Xu
+- **期刊：** Journal of advanced research
+- **发表时间：** 2025-10-09
+- **DOI：** 10.1016/j.jare.2025.10.002
+- **链接：** https://doi.org/10.1016/j.jare.2025.10.002
+- **数据来源：** PubMed
+- **命中关键词：** Camellia sinensis
+- **相关方向：** 茶叶品质、茶树综合研究
+- **摘要：**
+
+> BACKGROUND: L-Theanine, the signature non-protein amino acid unique to tea (Camellia sinensis), is crucial for tea's health benefits and umami taste, yet its biosynthesis and stability face increasing threats from climate change and processing challenges. AIM OF REVIEW: This review intends to provide the comprehensive synthesis of L-theanine's dual fate from biosynthesis to cup by integrating recent breakthroughs in its biosynthesis, transport, stress responses, and processing transformations. KEY SCIENTIFIC CONCEPTS OF THIS REVIEW: This review systematically elucidated the complete "root-to-shoot" metabolic pathway regulated by key genes and transporters of L-theanine, and summarized stress-adaptive mechanisms where L-theanine serves as both nitrogen reservoir and stress protectant, and further constructed a comprehensive analytical for L-theanine-derived flavor compound formation during tea processing. By bridging fundamental discoveries in plant physiology with practical applications in food chemistry, this work provides new insights into innovative strategies for developing climate-resilient tea varieties through molecular breeding and optimizing processing technologies to enhance product quality.
+
+- **对硕士课题可能有启发的地方：**
+  - 可比较其品质指标、感官评价或环境处理设计，作为你选择核心表型和对照条件的依据。
+  - 建议先通读摘要与方法部分，记录其样本量、关键技术和主要结论，再决定是否下载全文精读。
+
+### 茶树代谢组（4 篇）
+
+<a id="paper-ea6ac7da3b"></a>
+#### Unraveling the flavor development mechanisms of areca-intercropped Hainan Dayezhong white tea.
+
+- **作者：** Qiujing Ming; Jing Huang; Qiuru Zhang; Qiang Fang; Fang Wang; Jiayi Guo; Lei Pan; Liangyu Wu
+- **期刊：** Journal of the science of food and agriculture
+- **发表时间：** 2026-07-05
+- **DOI：** 10.1002/jsfa.70873
+- **链接：** https://doi.org/10.1002/jsfa.70873
+- **数据来源：** PubMed
+- **命中关键词：** tea quality
+- **相关方向：** 茶叶品质、茶树代谢组
+- **摘要：**
+
+> BACKGROUND: The impact of areca-tea intercropping on flavor formation in Hainan Dayezhong white tea was investigated in comparison with monoculture cultivation. Integrated metabolomic, transcriptomic, and electronic sensory analyses were performed on tea samples collected throughout white tea processing. RESULTS: In total, 3299 metabolites and 64 446 transcripts were identified, with 18 non-volatile metabolites distinguished as key biomarkers. The integrated pathway analysis revealed that the shaded microenvironment created by areca palms fundamentally reshaped the metabolic and transcriptomic profiles of fresh tea shoots. Compared to monoculture, intercropping promoted the accumulation of carbohydrates (e.g., rhamnose, fructose) and amino acids, particularly theanine, while enhancing the biosynthesis of flavonoids (including catechins and flavonol glycosides) and caffeine. These compositional differences persisted during withering and drying, with key reactions such as catechin oxidation and flavonol glycoside degradation further modulating the final flavor profile. CONCLUSION: Intercropped Hainan Dayezhong white tea developed superior sensory qualities, characterized by pronounced sweetness and a mellower taste due to reduced bitterness and astringency. These findings confirm that intercropping Hainan Dayezhong tea with areca palms is a viable and beneficial agronomic practice, while elucidating the mechanisms that link cultivation systems to final tea quality. © 2026 Society of Chemical Industry.
+
+- **对硕士课题可能有启发的地方：**
+  - 可参考其代谢物提取、质谱分析和差异代谢物筛选流程，建立品质性状与代谢通路之间的联系。
+  - 可比较其品质指标、感官评价或环境处理设计，作为你选择核心表型和对照条件的依据。
+
+<a id="paper-5d49c290e2"></a>
+#### Metabolomic dynamics of flavor compound synthesis in Pu’er green tea produced from Camellia sinensis var. assamica under seasonal variation
+
+- **作者：** Yuchen Wang; Ling Zhu; Sisi Liu; Lili Ye; Dongsheng Li; Fan Gong
+- **期刊：** Scientific Reports
+- **发表时间：** 2026-07-03
+- **DOI：** 10.1038/s41598-026-61192-4
+- **链接：** https://doi.org/10.1038/s41598-026-61192-4
+- **数据来源：** Crossref, PubMed
+- **命中关键词：** Camellia sinensis
+- **相关方向：** 茶叶品质、茶树代谢组、茶树综合研究
+- **摘要：**
+
+> Camellia sinensis var. assamica (CSA), a premium tea cultivar native to Yunnan, China, produces high-quality aged tea trees with unique flavor characteristics. Although previous studies have revealed the basic flavor composition of Pu'er green tea, the regulatory effects of seasonal variation on flavor compound biosynthesis in CSA aged tea leaves remain unclear. This study therefore aimed to clarify how seasonal changes (spring/summer/autumn) and spring-harvested aged tea tree leaves (165-year-old) jointly regulate the formation of flavor compounds in CSA green tea processed by standardized roasting. Metabolomic profiling via UPLC-ESI-MS/MS and GC-MS identified 1462 non-volatile and 703 volatile metabolites. We found that flavor compounds were strongly regulated by sugars, lipids, and amino acids, with roasting critically shaping their final profiles. Leaves of spring-harvested aged tea trees exhibit the highest levels of sugars, lipids, and volatile compounds, yet contain lower amounts of amino acids, which accounts for their distinctive sweet-aroma sensory profiles. These results decode seasonal flavor variations and the quality formation mechanism of spring-harvested aged tea tree leaves at the molecular level, offering novel foundational insights for quality improvement of Pu'er green tea.
 
 - **对硕士课题可能有启发的地方：**
   - 可参考其代谢物提取、质谱分析和差异代谢物筛选流程，建立品质性状与代谢通路之间的联系。
@@ -275,7 +353,7 @@
 - **DOI：** 10.21203/rs.3.rs-10056892/v1
 - **链接：** https://doi.org/10.21203/rs.3.rs-10056892/v1
 - **数据来源：** Crossref
-- **命中关键词：** Camellia sinensis、tea breeding
+- **命中关键词：** Camellia sinensis
 - **相关方向：** SSR与分子标记、茶叶品质、茶树综合研究、茶树育种与种质资源
 - **摘要：**
 

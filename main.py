@@ -1154,8 +1154,11 @@ def generate_report(
             "这不等于本周没有相关研究，可能与数据库收录延迟、在线发表日期或接口限流有关。",
         ]
 
-    lines += ["", f"## 本周最值得关注的 {featured_count if featured_count else '3–5'} 篇论文", ""]
+    lines += ["", "## 本周最值得关注的 3–5 篇论文", ""]
     if ranked:
+        if featured_count < 3:
+            lines.append(f"> 本周仅有 {featured_count} 篇可确认记录，以下全部列出。")
+            lines.append("")
         for index, paper in enumerate(ranked[:featured_count], 1):
             category = primary_category(paper, config)
             summary = summaries[paper.identity]
